@@ -1,0 +1,99 @@
+{
+	"version": 1,
+	"allow_edit": true,
+	"plugins": [],
+	"panes": [
+		{
+			"title": "Identification du moteur",
+			"width": 1,
+			"row": {
+				"3": 1,
+				"4": 1
+			},
+			"col": {
+				"3": 2,
+				"4": 1
+			},
+			"col_width": "2",
+			"widgets": [
+				{
+					"type": "identification",
+					"settings": {
+						"time": "datasources[\"sp\"][\"temps\"]",
+						"current": "datasources[\"sp\"][\"courant\"]",
+						"omega": "datasources[\"sp\"][\"omega\"]",
+						"voltage": "6",
+						"ratio": "100",
+						"percentage_omega": "90"
+					}
+				}
+			]
+		},
+		{
+			"width": 1,
+			"row": {
+				"3": 1,
+				"4": 1
+			},
+			"col": {
+				"3": 1,
+				"4": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "plot",
+					"settings": {
+						"title": "Courant",
+						"xaxis": "datasource_column",
+						"time": "datasources[\"sp\"][\"temps\"]",
+						"time_window": "2000",
+						"value": [
+							"datasources[\"sp\"][\"courant\"]"
+						],
+						"y_axis_min_range": "0,1",
+						"height": 4
+					}
+				},
+				{
+					"type": "plot",
+					"settings": {
+						"title": "Omega",
+						"xaxis": "datasource_column",
+						"time": "datasources[\"sp\"][\"temps\"]",
+						"time_window": "2000",
+						"value": [
+							"datasources[\"sp\"][\"omega\"]"
+						],
+						"y_axis_min_range": "0,10",
+						"height": 4
+					}
+				},
+				{
+					"type": "textarea",
+					"settings": {
+						"nblines_window": "1000",
+						"value": [
+							"datasources[\"sp\"][\"_rawdata\"]"
+						]
+					}
+				}
+			]
+		}
+	],
+	"datasources": [
+		{
+			"name": "sp",
+			"type": "serialport",
+			"settings": {
+				"port": "COM33",
+				"baudrate": 115200,
+				"variables_to_read": "temps,courant,omega",
+				"refresh_rate": 2000,
+				"separator": ",",
+				"checksum": "none"
+			}
+		}
+	],
+	"columns": 3
+}
