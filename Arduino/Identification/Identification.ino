@@ -1,5 +1,11 @@
+/******************************************************************************
+Programme d'identification des moteurs du robotu T-Quad, disponible à l'adresse:
+http://boutique.3sigma.fr/12-robots
 
-// Identification d'un moteur à courant continu
+Auteur: 3Sigma
+Version 1.1.1 - 15/12/2016
+*******************************************************************************/
+
 
 // Inclusion d'une bibliothèque permettant de lire et d'écrire plus rapidement sur les entrées-sorties digitales.
 // Télécharger à l'adresse http://www.3sigma.fr/telechargements/digitalWriteFast.zip
