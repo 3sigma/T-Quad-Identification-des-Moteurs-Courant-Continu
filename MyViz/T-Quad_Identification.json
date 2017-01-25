@@ -22,9 +22,9 @@
 						"time": "datasources[\"sp\"][\"temps\"]",
 						"current": "datasources[\"sp\"][\"courant\"]",
 						"omega": "datasources[\"sp\"][\"omega\"]",
+						"current_window": "2.0",
 						"voltage": "6",
-						"ratio": "100",
-						"percentage_omega": "90"
+						"ratio": "100"
 					}
 				}
 			]
