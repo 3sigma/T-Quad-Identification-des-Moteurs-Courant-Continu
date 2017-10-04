@@ -23,7 +23,9 @@
 						"current": "datasources[\"sp\"][\"courant\"]",
 						"omega": "datasources[\"sp\"][\"omega\"]",
 						"current_window": "2.0",
-						"voltage": "6",
+						"steady_state_omega": "500",
+						"voltage_current": "8",
+						"voltage_speed": "8",
 						"ratio": "100"
 					}
 				}
@@ -86,12 +88,13 @@
 			"name": "sp",
 			"type": "serialport",
 			"settings": {
-				"port": "COM33",
+				"port": "COM20",
 				"baudrate": 115200,
 				"variables_to_read": "temps,courant,omega",
 				"refresh_rate": 2000,
 				"separator": ",",
-				"checksum": "none"
+				"checksum": "none",
+				"immediate_startup": true
 			}
 		}
 	],
