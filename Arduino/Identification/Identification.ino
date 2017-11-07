@@ -1,9 +1,10 @@
 /******************************************************************************
-Programme d'identification des moteurs du robotu T-Quad, disponible à l'adresse:
+Programme d'identification des moteurs du robot T-Quad, disponible à l'adresse:
 http://boutique.3sigma.fr/12-robots
+Fonctionne avec la version de matériel 1.2
 
 Auteur: 3Sigma
-Version 1.1.1 - 15/12/2016
+Version 1.2.0 - 31/10/2017
 *******************************************************************************/
 
 
@@ -41,10 +42,10 @@ volatile long ticksCodeur = 0;
 
 // Définition pour le moteur arrière gauche du robot T-Quad (http://boutique.3sigma.fr/12-robots)
 #define directionMoteurArriereGauche  7
+#define directionBMoteurArriereGauche  34
 #define pwmMoteurArriereGauche  6
 #define mesurePWM_MoteurArriereGauche  12
 #define mesureCourant_MoteurArriereGauche 1
-#define mesureCourant_MoteurArriereDroit 0
 
 int adc = 0;      // Mesure analogique
 float courant[arraysize];      // Tableau des courants moyens du moteur
@@ -62,11 +63,8 @@ float Vref = 5.;
 float dt = 0.01;
 float VBat;
 
-// Résistances du circuit d'amplification de courant
-float R1 = 1000.;
-float R2 = 10000.;
 // Résistance de mesure
-float Rmes = 0.1;
+float Rmes = 0.02;
 
 // Déclaration de l'objet écran OLED
 U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_DEV_0|U8G_I2C_OPT_NO_ACK|U8G_I2C_OPT_FAST);  // Fast I2C / TWI 
@@ -111,6 +109,8 @@ void setup() {
   FlexiTimer2::start();
 
   // On ne génère pas un PWM car la période est trop petite
+  digitalWrite(directionMoteurArriereGauche, LOW);
+  digitalWrite(directionBMoteurArriereGauche, HIGH);
   digitalWrite(pwmMoteurArriereGauche, HIGH);
 }
 
@@ -204,19 +204,15 @@ void isrt() {
   // Première phase
   if (over == 0) {
     // Mesure du courant et stockage dans un tableau
-    // Compte-tenu de la structure du driver de puissance utilisé, le courant est la somme
-    // de celui passant dans les résistances arrière droite et arrière gauche
-    adc = analogRead(mesureCourant_MoteurArriereGauche) + analogRead(mesureCourant_MoteurArriereDroit);
+    adc = analogRead(mesureCourant_MoteurArriereGauche);
     tval[nbData] = micros();
-    courant[nbData] = (Vref * ((float)adc)/1024.) / ((1 + R2/R1) * Rmes);
+    courant[nbData] = -(Vref * ((float)adc)/1024. - 2.5) / (50. * Rmes);
     nbData++;
   }
   // Seconde phase
   else if (over == 3) {
-    // Compte-tenu de la structure du driver de puissance utilisé, le courant est la somme
-    // de celui passant dans les résistances arrière droite et arrière gauche
-    adc = analogRead(mesureCourant_MoteurArriereGauche) + analogRead(mesureCourant_MoteurArriereDroit);
-    courantsomme += (Vref * ((float)adc)/1024.) / ((1 + R2/R1) * Rmes);
+    adc = analogRead(mesureCourant_MoteurArriereGauche);
+    courantsomme -= (Vref * (float)adc/1024. - 2.5) / (50. * Rmes);
     compteurMesureCourant++;
     // Pour la vitesse, une exécution sur 100 interruptions Timer 2 (échantillonage à 10 ms au lieu de 100 µs)
     if (idecim == 100) {
